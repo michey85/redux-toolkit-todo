@@ -2,7 +2,8 @@ const NewTodoForm = ({ value, updateText, handleAction }) => {
   return (
     <label>
       <input
-        placeholer='new todo'
+        type="text"
+        placeholder='new todo'
         value={value}
         onChange={(e) => updateText(e.target.value)}
       />
