@@ -1,4 +1,8 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
+
+const todosAdapter = createEntityAdapter({
+    selectId: (todo) => todo.id,
+});
 
 // actions predicates
 function isPendingAction(action) {
@@ -21,7 +25,7 @@ export const createTodo = createAsyncThunk(
 export const toggleTodo = createAsyncThunk(
     'todos/toggle-todo',
     async (todoId, {getState, extra: api}) => {
-        const todo = getState().todos.todos.find(todo => todo.id === todoId);
+        const todo = getState().todos.entities[todoId];
 
         return api.toggleTodo(todoId, {
             ...todo,
@@ -38,12 +42,11 @@ export const removeTodo = createAsyncThunk(
 
 const todoSlice = createSlice({
     name: 'todos',
-    initialState: {
-        todos: [],
+    initialState: todosAdapter.getInitialState({
         loading: 'idle', // 'pending'
         error: null,
         currentRequestId: null,
-    },
+    }),
     reducers: {
         toggleComplete(state, action) {
             const toggledTodo = state.todos.find(todo => todo.id === action.payload.id);
@@ -56,16 +59,23 @@ const todoSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(createTodo.fulfilled, (state, action) => {
-                state.todos.push(action.payload)
+                todosAdapter.addOne(state, action.payload)
             })
             .addCase(toggleTodo.fulfilled, (state, action) => {
                 const updatedTodo = action.payload;
-                const index = state.todos.findIndex(todo => todo.id === updatedTodo.id);
-                state.todos[index] = updatedTodo;
+                // const index = state.todos.findIndex(todo => todo.id === updatedTodo.id);
+                // state.todos[index] = updatedTodo;
+                todosAdapter.updateOne(state, {
+                    id: updatedTodo.id, // у кого меняем
+                    changes: { // что меняем
+                        completed: updatedTodo.completed 
+                    }
+                });
             })
             .addCase(removeTodo.fulfilled, (state, action) => {
-                console.log(action.meta)
-                state.todos = state.todos.filter(todo => todo.id !== action.meta.arg);
+                // console.log(action.meta)
+                // state.todos = state.todos.filter(todo => todo.id !== action.meta.arg);
+                todosAdapter.removeOne(state, action);
             })
             .addMatcher(isPendingAction, (state, action) => {
                 state.loading = 'pending';
@@ -88,3 +98,14 @@ const todoSlice = createSlice({
 // export const {removeTodo} = todoSlice.actions;
 
 export default todoSlice.reducer;
+
+// selectors
+export const todosSelectors = todosAdapter.getSelectors(state => state.todos)
+// todosSelectors.selectAll(state => state)
+// export const {
+//     selectIds,
+//     selectEntities,
+//     selectById,
+//     selectAll,
+//     selectTotal,
+// } = todosSelectors;
