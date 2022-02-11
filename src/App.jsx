@@ -1,11 +1,13 @@
 import {useState} from 'react';
 import { useDispatch } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
 
-import { addTodo } from './store/todoSlice';
+import { createTodo } from './store/todoSlice';
 import NewTodoForm from './components/NewTodoForm';
 import TodoList from './components/TodoList';
 
 import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
@@ -14,7 +16,10 @@ function App() {
 
   const handleAction = () => {
     if(text.trim().length) {
-      dispatch(addTodo({text}));
+      dispatch(createTodo(text)).then(({payload: {title}}) => {
+        toast(`Todo ${title} were created`);
+      })
+      
       setText('');
     }
   }
@@ -27,6 +32,7 @@ function App() {
         handleAction={handleAction}
       />
       <TodoList />
+      <ToastContainer autoClose={3000} />
     </div>
   );
 }
