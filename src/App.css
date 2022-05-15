@@ -1,23 +1,14 @@
 .App {
   text-align: center;
+  width: 500px;
+  margin: 0 auto;
 }
 
-ul {
-  list-style: none;
-}
-
-li {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-input:checked + span {
+label[data-checked] + p {
   text-decoration: line-through;
 }
 
-span:last-child {
+button[aria-label="Close"] {
   color: red;
   cursor: pointer;
 }
