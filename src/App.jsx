@@ -3,13 +3,10 @@ import NewTodoForm from './components/NewTodoForm';
 import ThemeSelector from './components/ThemeSelector';
 import TodoList from './components/TodoList';
 import TotalInfo from './components/TotalInfo';
-import { useTheme } from './hooks';
 
 import './App.css';
 
 function App() {
-  useTheme();
-
   return (
     <div className='App'>
       <ThemeSelector />

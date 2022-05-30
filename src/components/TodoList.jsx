@@ -2,9 +2,11 @@ import { useSelector } from 'react-redux';
 import { VStack } from '@chakra-ui/react'
 
 import TodoItem from './TodoItem';
+import { selectTodosByFilter } from '../store/selectors';
 
 const TodoList = () => {
-  const todos = useSelector(state => state.todos.list);
+  const todos = useSelector(selectTodosByFilter);
+  console.log('render todos')
 
   return (
     <VStack spacing={2} mt={4}>
