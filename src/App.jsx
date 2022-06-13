@@ -14,7 +14,7 @@ function App() {
 
   const handleAction = () => {
     if(text.trim().length) {
-      dispatch(addTodo({text}));
+      dispatch(addTodo(text));
       setText('');
     }
   }
