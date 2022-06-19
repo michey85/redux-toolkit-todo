@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import {toggleComplete, removeTodo} from '../store/todoSlice';
+import { toggleComplete, removeTodo } from '../store/todoSlice';
 
 const TodoItem = ({ id, text, completed }) => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const TodoItem = ({ id, text, completed }) => {
         onChange={() => dispatch(toggleComplete(id))}
       />
       <span>{text}</span>
-      <span onClick={() => dispatch(removeTodo(id))} type="button">&times;</span>
+      <span onClick={() => dispatch(removeTodo(id))} role="button">&times;</span>
     </li>
   );
 };
