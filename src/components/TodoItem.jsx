@@ -8,7 +8,7 @@ const TodoItem = ({ id, text, completed }) => {
   return (
     <HStack spacing={3}>
       <Checkbox
-        checked={completed}
+        isChecked={completed}
         onChange={() => dispatch(toggleComplete({ id }))}
       />
       <Text>{text}</Text>
