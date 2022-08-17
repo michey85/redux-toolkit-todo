@@ -7,11 +7,11 @@ export const fetchTodos = createAsyncThunk(
             const response = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=10');
             
             if (!response.ok) {
-                throw new Error('Server Error!');
+                throw new Error("Can't fetch");
             }
-    
+
             const data = await response.json();
-    
+            
             return data;
         } catch (error) {
             return rejectWithValue(error.message);
@@ -100,6 +100,7 @@ export const addNewTodo = createAsyncThunk(
 
 const setError = (state, action) => {
     state.status = 'rejected';
+    // state.error = action.error.message;
     state.error = action.payload;
 }
 
